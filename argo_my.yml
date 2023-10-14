@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: my-workflow-
+spec:
+  entrypoint: main
+  templates:
+    - name: main
+      steps:
+        - - name: run-json-to-txt-container
+            template: json-to-txt-container
+          - name: run-translate-container
+            template: translate-container
+    - name: json-to-txt-container
+      container:
+        image: eitd/json_to_txt
+        command: ["python", "/DataCloudDSL/json_to_txt/json_to_txt.py"]
+        volumeMounts:
+          - name: shared-volume
+            mountPath: /DataCloudDSL
+    - name: translate-container
+      container:
+        image: eitd/translate
+        command: ["python", "/DataCloudDSL/translate/translate.py"]
+        volumeMounts:
+          - name: shared-volume
+            mountPath: /DataCloudDSL
+  volumes:
+    - name: shared-volume
+      hostPath:
+        path: /Users/houyining/Documents/KTH/course/Modern Methods in Software Engineering /dsl/DataCloudDSL

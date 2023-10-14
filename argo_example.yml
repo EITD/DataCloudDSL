@@ -1,0 +1,69 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: datacloud
+spec:
+  entrypoint: main-workflow
+  templates:
+    - name: main-workflow
+      dag:
+        tasks:
+          - name: task-1
+            template: generatesampledata
+          - name: task-2
+            dependencies: [task-1]
+            template: receivedatafrommqtt
+          - name: task-3
+            dependencies: [task-2]
+            template: createnotification
+          - name: task-4
+            dependencies: [task-3]
+            template: filternotifications
+
+    - name: generatesampledata
+      container:
+        image: eitd/generate_sample_data
+        command: ["python", "/DataCloudDSL/generate_sample_data/generate_sample_data.py"]
+        # args: ["echo 'Echoing the envParam Frequency: $Frequency'
+        #       && echo 'Echoing the envParam Duration: $Duration'
+        #       && echo 'Echoing the envParam MQTT_HOST: $MQTT_HOST'
+        #       && echo 'Echoing the envParam MQTT_CLIENT_ID: $MQTT_CLIENT_ID'
+        #       && echo 'Echoing the envParam MQTT_PASS: $MQTT_PASS'"]
+        env:
+        - name: Frequency
+          value: "9"
+        - name: Duration
+          value: "9s"
+        - name: MQTT_HOST
+          value: "172.17.0.2"
+        - name: MQTT_CLIENT_ID
+          value: "TGDATACLOUD"
+        - name: MQTT_PASS
+          value: "PASS"
+
+    - name: receivedatafrommqtt
+      container:
+        image: eitd/receive_data_from_mqtt
+        command: ["python", "-u", "/DataCloudDSL/receive_data_from_mqtt/receive_data_from_mqtt.py"]
+        # args: ["echo 'Echoing the envParam RABBITMQ_HOST: $RABBITMQ_HOST'
+        #       && echo 'Echoing the envParam RABBITMQ_USERNAME: $RABBITMQ_USERNAME'
+        #       && echo 'Echoing the envParam RABBITMQ_PASSWORD: $RABBITMQ_PASSWORD'"]
+        # env:
+        # - name: RABBITMQ_HOST
+        #   value: "oslo.sct.sintef"
+        # - name: RABBITMQ_USERNAME
+        #   value: "tell"
+        # - name: RABBITMQ_PASSWORD
+        #   value: "???"
+
+    # - name: createnotification
+    #   container:
+    #     image: registry.sintef.cloud/application-logic:latest
+    #     command: [sh, -c]
+        
+    # - name: filternotifications
+    #   container:
+    #     image: registry.sintef.cloud/application-logic:latest
+    #     command: [sh, -c]
+
+
