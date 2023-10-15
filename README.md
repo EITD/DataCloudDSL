@@ -1,4 +1,4 @@
-## My Pipeline ##
+# Task1 Pipeline #
 
 ### Build Image from Dockerfile ###
 
@@ -22,7 +22,20 @@ docker run -v .:/DataCloudDSL eitd/json_to_txt
 docker run -v .:/DataCloudDSL eitd/translate
 ```
 
-## Example Pipeline ##
+
+# Task2 Argo #
+
+Submit argo_task2.yml to argo.
+
+
+# Task3 DataCloud #
+
+TODO: For Task1 pipeline, can't add `volume` parameter to the outside structure of generated `yml`.
+
+
+# Task4 Pipeline #
+
+## Repeat Task1 ##
 
 ### Create MQTT broker ###
 
@@ -34,7 +47,9 @@ docker run --name mosquitto -v "$(pwd)/mosquitto_passwd:/mosquitto/config/passwd
 
 > If you use the default configuration file, you will get an Error: Address not available.
 
-### Find mosquitto IP address ###
+### Find broker IP address ###
+
+Clients need this value when connecting to the broker.
 
 ```bash
 docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mosquitto
@@ -56,8 +71,16 @@ docker build -t eitd/receive_data_from_mqtt -f receive_data_from_mqtt/Dockerfile
 In DataCloudDSL directory:
 
 ```bash
-docker run -e MQTT_HOST=172.17.0.2 -e MQTT_CLIENT_ID=publisher -e MQTT_PASS=password eitd/generate_sample_data
+docker run -e Frequency=9 -e Duration=9 -e MQTT_HOST=172.17.0.2 -e MQTT_CLIENT_ID=publisher -e MQTT_PASS=password eitd/generate_sample_data
 ```
 ```bash
-docker run eitd/receive_data_from_mqtt
+docker run -e MOSQUITTO_HOST=172.17.0.2 -e MOSQUITTO_USERNAME=subscriber -e MOSQUITTO_PASSWORD=password eitd/receive_data_from_mqtt
 ```
+
+> MQTT_HSOT should be equal to the broker IP address stated above.
+
+## Repeat Task2 ##
+
+Submit argo_task4.yml to argo.
+
+## Repeat Task3 ##
