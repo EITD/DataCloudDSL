@@ -9,6 +9,7 @@ def on_message(client, userdata, message):
 
 # create mqtt client
 client = mqtt.Client()
+client.username_pw_set("subscriber", "password")
 client.on_message = on_message
 
 # connect to MQTT Broker

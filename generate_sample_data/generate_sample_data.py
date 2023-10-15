@@ -1,10 +1,20 @@
-import paho.mqtt.publish as publish
+import paho.mqtt.client as mqtt
+import os
+
+# frequency = os.environ.get("Frequency")
+# duration = os.environ.get("Duration")
+mqtt_host = os.environ.get("MQTT_HOST")
+mqtt_client_id = os.environ.get("MQTT_CLIENT_ID")
+mqtt_pass = os.environ.get("MQTT_PASS")
 
 # mosquitto ip address
-broker_address = "172.17.0.2"  
+broker_address = mqtt_host
 topic = "sample_topic"
 
 # publish message
-publish.single(topic, "Hello, DataCloud!", hostname=broker_address)
+client = mqtt.Client()
+client.username_pw_set(mqtt_client_id, mqtt_pass)
+client.connect(broker_address, 1883)
+client.publish(topic, "Hello, DataCloud!")
 
 print("Message published successfully!")

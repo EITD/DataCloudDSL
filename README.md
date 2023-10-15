@@ -29,11 +29,16 @@ docker run -v .:/DataCloudDSL eitd/translate
 In DataCloudDSL directory:
 
 ```bash
-docker run --name mosquitto -v "$(pwd)/mosquitto.conf:/mosquitto/config/mosquitto.conf" eclipse-mosquitto
+docker run --name mosquitto -v "$(pwd)/mosquitto_passwd:/mosquitto/config/passwd" -v "$(pwd)/mosquitto.conf:/mosquitto/config/mosquitto.conf" eclipse-mosquitto
 ```
 
 > If you use the default configuration file, you will get an Error: Address not available.
 
+### Find mosquitto IP address ###
+
+```bash
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mosquitto
+```
 
 ### Build Image from Dockerfile ###
 
@@ -51,7 +56,7 @@ docker build -t eitd/receive_data_from_mqtt -f receive_data_from_mqtt/Dockerfile
 In DataCloudDSL directory:
 
 ```bash
-docker run eitd/generate_sample_data
+docker run -e MQTT_HOST=172.17.0.2 -e MQTT_CLIENT_ID=publisher -e MQTT_PASS=password eitd/generate_sample_data
 ```
 ```bash
 docker run eitd/receive_data_from_mqtt
