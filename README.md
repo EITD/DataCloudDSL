@@ -1,5 +1,7 @@
 # Task1 Pipeline #
 
+TODO: need more containers and increase complexity of the workflow.
+
 ### Build Image from Dockerfile ###
 
 In DataCloudDSL directory:
@@ -79,8 +81,12 @@ docker run -e MOSQUITTO_HOST=172.17.0.2 -e MOSQUITTO_USERNAME=subscriber -e MOSQ
 
 > MQTT_HSOT should be equal to the broker IP address stated above.
 
+TODO: createnotification and filternotification not implemented yet.
+
 ## Repeat Task2 ##
 
 Submit argo_task4.yml to argo.
 
 ## Repeat Task3 ##
+
+TODO: not implemented yet.
