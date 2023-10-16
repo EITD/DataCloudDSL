@@ -25,6 +25,8 @@ client.loop_stop()
 
 # publish messages
 for i in range(int(frequency)):
-    client.publish(topic, f"Message {i+1}")
+    msg = f"Message {i+1}"
+    client.publish(topic, msg)
+    print(f"Generate message '{msg}'")
 
 print("Message published successfully!")

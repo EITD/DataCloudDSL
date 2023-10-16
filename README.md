@@ -32,7 +32,7 @@ Submit argo_task2.yml to argo.
 
 # Task3 DataCloud #
 
-TODO: For Task1 pipeline, can't add `volume` parameter to the outside structure of generated `yml`.
+TODO: For Task1 pipeline, can't add `volume` parameter to the outside structure of generated `yml`. But we might not need to execute the file from DataCloud tool, just draw the pipeline??
 
 
 # Task4 Pipeline #
@@ -57,6 +57,18 @@ Clients need this value when connecting to the broker.
 docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mosquitto
 ```
 
+### Client authentication for mosquitto ###
+
+In DataCloudDSL directory:
+
+```bash
+mosquitto_passwd mosquitto_passwd <username>
+```
+
+And enter password. This will add an authenticated client.
+
+> Try `chmod 0777 mosquitto_passwd` if you can't edit the file. After that, change back to `chmod 0700 mosquitto_passwd`.
+
 ### Build Image from Dockerfile ###
 
 In DataCloudDSL directory:
@@ -66,6 +78,12 @@ docker build -t eitd/generate_sample_data -f generate_sample_data/Dockerfile .
 ```
 ```bash
 docker build -t eitd/receive_data_from_mqtt -f receive_data_from_mqtt/Dockerfile .
+```
+```bash
+docker build -t eitd/create_notification -f create_notification/Dockerfile .
+```
+```bash
+docker build -t eitd/filter_notification -f filter_notification/Dockerfile .
 ```
 
 ### Run Container ###
@@ -78,10 +96,16 @@ docker run -e Frequency=9 -e Duration=9 -e MQTT_HOST=172.17.0.2 -e MQTT_CLIENT_I
 ```bash
 docker run -e MOSQUITTO_HOST=172.17.0.2 -e MOSQUITTO_USERNAME=subscriber -e MOSQUITTO_PASSWORD=password eitd/receive_data_from_mqtt
 ```
+```bash
+docker run eitd/create_notification
+```
+```bash
+docker run eitd/filter_notification
+```
 
 > MQTT_HSOT should be equal to the broker IP address stated above.
 
-TODO: createnotification and filternotification not implemented yet.
+TODO: Implement the notification by logging. Is that enough?
 
 ## Repeat Task2 ##
 

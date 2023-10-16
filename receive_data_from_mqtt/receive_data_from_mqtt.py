@@ -13,7 +13,9 @@ topic = "sample_topic"
 
 # deal with received message
 def on_message(client, userdata, message):
-    print(f"Received message '{message.payload.decode()}' on topic '{message.topic}'")
+    msg = message.payload.decode()
+    print(f"Receive message '{msg}'")
+    client.publish("messages", msg)
 
 # create mqtt client and connect to mqtt broker
 client = mqtt.Client()
@@ -26,5 +28,5 @@ client.subscribe(topic)
 
 # keep connection
 client.loop_start()
-time.sleep(30)
+time.sleep(20)
 client.loop_stop()

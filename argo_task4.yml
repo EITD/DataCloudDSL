@@ -11,10 +11,10 @@ spec:
             template: generatesampledata
           - name: task-2
             template: receivedatafrommqtt
-          # - name: task-3
-          #   template: createnotification
-          # - name: task-4
-          #   template: filternotifications
+          - name: task-3
+            template: createnotification
+          - name: task-4
+            template: filternotifications
 
     - name: generatesampledata
       container:
@@ -28,7 +28,7 @@ spec:
             echo "Echoing the envParam MQTT_HOST: $MQTT_HOST"
             echo "Echoing the envParam MQTT_CLIENT_ID: $MQTT_CLIENT_ID"
             echo "Echoing the envParam MQTT_PASS: $MQTT_PASS"
-            python /DataCloudDSL/generate_sample_data/generate_sample_data.py
+            python -u /DataCloudDSL/generate_sample_data/generate_sample_data.py
         
         env:
           - name: Frequency
@@ -62,14 +62,14 @@ spec:
           - name: MOSQUITTO_PASSWORD
             value: "password"
 
-    # - name: createnotification
-    #   container:
-    #     image: registry.sintef.cloud/application-logic:latest
-    #     command: [sh, -c]
+    - name: createnotification
+      container:
+        image: eitd/create_notification
+        command: ["python", "-u", "/DataCloudDSL/create_notification/create_notification.py"]
         
-    # - name: filternotifications
-    #   container:
-    #     image: registry.sintef.cloud/application-logic:latest
-    #     command: [sh, -c]
+    - name: filternotifications
+      container:
+        image: eitd/filter_notification
+        command: ["python", "-u", "/DataCloudDSL/filter_notification/filter_notification.py"]
 
 
