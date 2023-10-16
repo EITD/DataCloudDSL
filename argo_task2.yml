@@ -6,11 +6,23 @@ spec:
   entrypoint: main
   templates:
     - name: main
-      steps:
-        - - name: run-json-to-txt-container
+      dag:
+        tasks:
+          - name: run-unzip-container
+            template: unzip-container
+          - name: run-json-to-txt-container
+            dependencies: [run-unzip-container]
             template: json-to-txt-container
           - name: run-translate-container
+            dependencies: [run-json-to-txt-container]
             template: translate-container
+    - name: unzip-container
+      container:
+        image: eitd/unzip
+        command: ["python", "/DataCloudDSL/unzip/unzip.py"]
+        volumeMounts:
+          - name: shared-volume
+            mountPath: /DataCloudDSL
     - name: json-to-txt-container
       container:
         image: eitd/json_to_txt

@@ -7,6 +7,9 @@ TODO: need more containers and increase complexity of the workflow.
 In DataCloudDSL directory:
 
 ```bash
+docker build -t eitd/unzip -f unzip/Dockerfile .
+```
+```bash
 docker build -t eitd/json_to_txt -f json_to_txt/Dockerfile .
 ```
 ```bash
@@ -17,6 +20,9 @@ docker build -t eitd/translate -f translate/Dockerfile .
 
 In DataCloudDSL directory:
 
+```bash
+docker run -v .:/DataCloudDSL eitd/unzip
+```
 ```bash
 docker run -v .:/DataCloudDSL eitd/json_to_txt
 ```
@@ -32,7 +38,7 @@ Submit argo_task2.yml to argo.
 
 # Task3 DataCloud #
 
-TODO: For Task1 pipeline, can't add `volume` parameter to the outside structure of generated `yml`. But we might not need to execute the file from DataCloud tool, just draw the pipeline??
+TODO: can't add `volume` parameter to the outside structure of generated `yml`. But we might not need to execute the file from DataCloud tool, just draw the pipeline??
 
 
 # Task4 Pipeline #
@@ -113,4 +119,4 @@ Submit argo_task4.yml to argo.
 
 ## Repeat Task3 ##
 
-TODO: not implemented yet.
+TODO: can't change `dag` to `step` in outside structure(need parallel execution). `args` also seems strange. But we might not need to execute the file from DataCloud tool, just draw the pipeline?? 
