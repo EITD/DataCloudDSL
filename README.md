@@ -1,7 +1,5 @@
 # Task1 Pipeline #
 
-TODO: need more containers and increase complexity of the workflow.
-
 ### Build Image from Dockerfile ###
 
 In DataCloudDSL directory:
@@ -18,6 +16,8 @@ docker build -t eitd/translate -f translate/Dockerfile .
 
 ### Run Container ###
 
+> Check `input.json` file is deleted. And nothing is in `input.txt` and `output.txt`.
+
 In DataCloudDSL directory:
 
 ```bash
@@ -33,12 +33,14 @@ docker run -v .:/DataCloudDSL eitd/translate
 
 # Task2 Argo #
 
+> Check `input.json` file is deleted. And nothing is in `input.txt` and `output.txt`.
+
 Submit argo_task2.yml to argo.
 
 
 # Task3 DataCloud #
 
-TODO: can't add `volume` parameter to the outside structure of generated `yml`. But we might not need to execute the file from DataCloud tool, just draw the pipeline??
+Draw the pipeline.
 
 
 # Task4 Pipeline #
@@ -94,6 +96,8 @@ docker build -t eitd/filter_notification -f filter_notification/Dockerfile .
 
 ### Run Container ###
 
+> HOST should be equal to the broker IP address stated above. Username and password should be included in the `mosquitto_passwd` file.
+
 In DataCloudDSL directory:
 
 ```bash
@@ -109,14 +113,10 @@ docker run eitd/create_notification
 docker run eitd/filter_notification
 ```
 
-> MQTT_HSOT should be equal to the broker IP address stated above.
-
-TODO: Implement the notification by logging. Is that enough?
-
 ## Repeat Task2 ##
 
 Submit argo_task4.yml to argo.
 
 ## Repeat Task3 ##
 
-TODO: can't change `dag` to `step` in outside structure(need parallel execution). `args` also seems strange. But we might not need to execute the file from DataCloud tool, just draw the pipeline?? 
+Draw the pipeline. 
